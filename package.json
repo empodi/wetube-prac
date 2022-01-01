@@ -1,0 +1,22 @@
+{
+  "name": "wetube-prac",
+  "version": "1.0.0",
+  "description": "wetube",
+  "main": "index.js",
+  "scripts": {
+    "win": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/empodi/wetube-prac.git"
+  },
+  "author": "empodi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/empodi/wetube-prac/issues"
+  },
+  "homepage": "https://github.com/empodi/wetube-prac#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
