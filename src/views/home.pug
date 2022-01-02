@@ -2,7 +2,7 @@ extends base.pug
 include mixins/video
 
 block content 
-    h1 HOME
-    ul 
-        for video in videos     
-            +video(video)
+    for video in videos     
+        +video(video)
+    else    
+        li Sorry, nothing found...
