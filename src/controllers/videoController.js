@@ -13,7 +13,7 @@ export const home = (req, res) => {
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({}); // need async to use await
+    const videos = await Video.find({}).sort({ createdAt: "desc" }); // need async to use await
     return res.render("home", { pageTitle: "Home", videos });
   } catch {
     return res.render("server-error");
@@ -50,9 +50,7 @@ export const postEdit = async (req, res) => {
   await Video.findByIdAndUpdate(id, {
     title: title,
     description: description,
-    hashtags: hashtags
-      .split(",")
-      .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+    hashtags: Video.formatHashtags(hashtags), // static function
   });
   return res.redirect(`/videos/${id}`);
 };
@@ -67,7 +65,7 @@ export const postUpload = async (req, res) => {
       title: title,
       description: description,
       //createdAt: Date.now(), // default in VideoSchema
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      hashtags: Video.formatHashtags(hashtags), // static function
       //meta: default in VideoSchema
     });
     return res.redirect("/");
@@ -79,4 +77,22 @@ export const postUpload = async (req, res) => {
       errorMessage: error._message,
     });
   }
+};
+export const deleteVideo = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  return res.redirect("/");
+};
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(`${keyword}$`, "ig"),
+      },
+    });
+  }
+  return res.render("search", { pageTitle: "Search", videos });
 };
