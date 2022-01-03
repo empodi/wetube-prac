@@ -1,9 +1,11 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import globalRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
+import { localsMiddleware } from "./middlewares";
 
 // console.log(process.cwd());
 
@@ -22,9 +24,11 @@ app.use(
     secret: "Hello!",
     resave: true,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
   })
 );
 
+app.use(localsMiddleware); // should be after session middleware
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
