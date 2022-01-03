@@ -21,11 +21,11 @@ app.use(
   session({
     // this middleware will remember everybody who comes to the website
     // even the not logged in ones
-    secret: "Hello!",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false, // gives cookie only to logged in users
     // uninitialized session is intialized in postLogin function
-    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
 
