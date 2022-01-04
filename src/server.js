@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import globalRouter from "./routers/rootRouter";
+import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import { localsMiddleware } from "./middlewares";
@@ -30,7 +30,7 @@ app.use(
 );
 
 app.use(localsMiddleware); // should be after session middleware
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 
