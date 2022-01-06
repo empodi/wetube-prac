@@ -92,3 +92,15 @@ export const logout = (req, res) => {
   //req.session.loggedIn = false;
   return res.redirect("/");
 };
+
+export const githubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: "1a9b60be3021cdc61e0f",
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = baseUrl + "?" + params;
+  return res.redirect(finalUrl);
+};
