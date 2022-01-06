@@ -93,14 +93,22 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const githubLogin = (req, res) => {
+export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: "1a9b60be3021cdc61e0f",
+    client_id: process.env.GH_CLIENT_ID,
     allow_signup: false,
     scope: "read:user user:email",
   };
   const params = new URLSearchParams(config).toString();
   const finalUrl = baseUrl + "?" + params;
   return res.redirect(finalUrl);
+};
+export const finishGithubLogin = (req, res) => {
+  const config = {
+    client_id: process.env.GH_CLIENT_ID,
+    client_secret: process.env.GH_SECRET,
+    code: req.query.code,
+  };
+  console.log(config);
 };
