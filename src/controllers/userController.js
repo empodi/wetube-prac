@@ -153,6 +153,7 @@ export const finishGithubLogin = async (req, res) => {
       // create an account
       user = await User.create({
         name: userData.name,
+        avatarUrl: userData.avatar_url,
         socialOnly: true,
         username: userData.login,
         email: emailObj.email,
