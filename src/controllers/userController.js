@@ -81,9 +81,6 @@ export const postLogin = async (req, res) => {
 
   return res.redirect("/");
 };
-export const edit = (req, res) => {
-  return res.send("Edit User");
-};
 export const remove = (req, res) => {
   return res.send("Remove user");
 };
@@ -167,4 +164,10 @@ export const finishGithubLogin = async (req, res) => {
   } else {
     return res.redirect("/login");
   }
+};
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = (req, res) => {
+  return res.redirect("/");
 };
