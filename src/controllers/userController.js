@@ -91,7 +91,7 @@ export const see = (req, res) => {
   return res.send("See User Profile");
 };
 export const logout = (req, res) => {
-  //req.session.loggedIn = false;
+  req.session.destroy();
   return res.redirect("/");
 };
 
