@@ -1,6 +1,8 @@
 import e from "express";
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import fetch from "node-fetch";
+import { token } from "morgan";
 
 export const getJoin = (req, res) => {
   res.render("join", { pageTitle: "Create Account" });
@@ -55,7 +57,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
   const pageTitle = "Log In";
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
 
   if (!user) {
     return res.status(400).render("login", {
@@ -104,11 +106,64 @@ export const startGithubLogin = (req, res) => {
   const finalUrl = baseUrl + "?" + params;
   return res.redirect(finalUrl);
 };
-export const finishGithubLogin = (req, res) => {
+export const finishGithubLogin = async (req, res) => {
+  //exchange the token github gave us to access token
+  const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
     client_id: process.env.GH_CLIENT_ID,
     client_secret: process.env.GH_SECRET,
     code: req.query.code,
   };
-  console.log(config);
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = baseUrl + "?" + params;
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    })
+  ).json();
+
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiUrl = "https://api.github.com";
+    const userData = await (
+      await fetch(`${apiUrl}/user`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    //console.log(userData);
+    const emailData = await (
+      await fetch(`${apiUrl}/user/emails`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    //console.log(emailData);
+    const emailObj = emailData.find(
+      (email) => email.primary === true && email.verified === true
+    );
+    if (!emailObj) return res.redirect("/login");
+
+    let user = await User.findOne({ email: emailObj.email });
+    // check if there is already a user with same email from github
+    if (!user) {
+      // create an account
+      user = await User.create({
+        name: userData.name,
+        socialOnly: true,
+        username: userData.login,
+        email: emailObj.email,
+        password: "",
+        location: userData.location,
+      });
+      req.session.loggedIn = true;
+      req.session.user = user;
+      return res.redirect("/");
+    }
+  } else {
+    return res.redirect("/login");
+  }
 };
