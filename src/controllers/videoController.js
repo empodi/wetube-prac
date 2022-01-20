@@ -69,7 +69,7 @@ export const postUpload = async (req, res) => {
   } = req;
 
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       title: title,
       owner: _id,
       description: description,
@@ -78,8 +78,10 @@ export const postUpload = async (req, res) => {
       hashtags: Video.formatHashtags(hashtags), // static function
       //meta: default in VideoSchema
     });
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save(); // IMPORTANT!!!
     return res.redirect("/");
-    ß;
   } catch (error) {
     console.log(error);
     return res.status(404).render("upload", {
