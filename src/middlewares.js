@@ -1,6 +1,7 @@
 // res.locals is initially empty
 // anything can be added to res.locals object
 // pug template can access res.locals for free
+import multer from "multer";
 
 export const localsMiddleware = (req, res, next) => {
   /* LOCALS ARE AUTOMATICALLY IMPORTED TO VIEWS */
@@ -29,3 +30,9 @@ export const publicOnlyMiddleware = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
+export const uploadFiles = multer({ dest: "uploads/" });
+/*
+  NEVER SAVE A FILE ON A DATABASE!!!!! 
+  SAVE THE LOCATION OF THE FILE ON A DATABASE
+*/
