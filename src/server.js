@@ -31,6 +31,7 @@ app.use(
 
 app.use(localsMiddleware); // should be after session middleware
 app.use("/uploads", express.static("uploads")); // allows browser to access the files inside the folder
+app.use("/assets", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
