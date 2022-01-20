@@ -84,8 +84,13 @@ export const postLogin = async (req, res) => {
 export const remove = (req, res) => {
   return res.send("Remove user");
 };
-export const see = (req, res) => {
-  return res.send("See User Profile");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  return res.render("profile", {
+    pageTitle: `${user.username}'s Profile`,
+    user,
+  });
 };
 export const logout = (req, res) => {
   req.session.destroy();
