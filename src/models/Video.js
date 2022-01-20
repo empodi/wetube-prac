@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema({
   title: { type: String, trim: true, required: true, maxlength: 80 },
+  fileUrl: { type: String, required: true },
   description: {
     type: String,
     trim: true,
@@ -24,12 +25,13 @@ videoSchema.static("formatHashtags", function (hashtags) {
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
+/*
 videoSchema.pre("save", async function () {
   this.hashtags = this.hashtags[0]
     .split(",")
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
-
+*/
 const movieModel = mongoose.model("Video", videoSchema);
 
 export default movieModel;
