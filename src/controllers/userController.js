@@ -12,7 +12,7 @@ export const postJoin = async (req, res) => {
   //const errorExists = await User.exists({ $or: [{ username }, { email }] });
 
   if (password !== password2) {
-    return res.status(404).render("join", {
+    return res.status(400).render("join", {
       pageTitle,
       errorMessage: "Password confirmation fail.",
     });
@@ -24,13 +24,13 @@ export const postJoin = async (req, res) => {
   const emailExists = await User.exists({ email });
 
   if (userExists && emailExists)
-    return res.status(404).render("join", {
+    return res.status(400).render("join", {
       pageTitle,
       errorMessage: "Username and Email are already taken.",
     });
   if (emailExists) errorType = "Email";
   if (userExists || emailExists) {
-    return res.status(404).render("join", {
+    return res.status(400).render("join", {
       pageTitle,
       errorMessage: `${errorType} is already taken.`,
     });
