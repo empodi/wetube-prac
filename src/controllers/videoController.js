@@ -112,16 +112,20 @@ export const postUpload = async (req, res) => {
 export const deleteVideo = async (req, res) => {
   const {
     params: { id },
-    session: { user: _id },
+    session: {
+      user: { _id },
+    },
   } = req;
   const video = await Video.findById(id);
 
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found." });
+    console.log("NO VIDEO");
+    return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(video.owner) !== String(_id)) {
-    return res.status(404).redirect("/");
+    return res.status(403).redirect("/");
   }
+
   await Video.findByIdAndDelete(id);
   return res.redirect("/");
 };
