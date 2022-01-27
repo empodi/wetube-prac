@@ -115,6 +115,7 @@ export const startGithubLogin = (req, res) => {
   const finalUrl = baseUrl + "?" + params;
   return res.redirect(finalUrl);
 };
+
 export const finishGithubLogin = async (req, res) => {
   //exchange the token github gave us to access token
   const baseUrl = "https://github.com/login/oauth/access_token";
@@ -154,12 +155,13 @@ export const finishGithubLogin = async (req, res) => {
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
-    if (!emailObj) return res.redirect("/login");
-
+    if (!emailObj) {
+      return res.redirect("/login");
+    }
     let user = await User.findOne({ email: emailObj.email });
     // check if there is already a user with same email from github
     if (!user) {
-      // create an account
+      // create an account if user doesn't exist
       user = await User.create({
         name: userData.name,
         avatarUrl: userData.avatar_url,
@@ -169,14 +171,15 @@ export const finishGithubLogin = async (req, res) => {
         password: "",
         location: userData.location,
       });
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
     }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
 };
+
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
