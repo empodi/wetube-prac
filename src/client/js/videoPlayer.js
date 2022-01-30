@@ -140,6 +140,11 @@ const handleMouseControlsOut = () => {
   isMouseOnControls = false;
 };
 
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, { method: "POST" });
+};
+
 playBtn.addEventListener("click", handlePlayBtnClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
@@ -156,3 +161,5 @@ videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 videoControls.addEventListener("mouseenter", handleMouseControlsIn);
 videoControls.addEventListener("mouseleave", handleMouseControlsOut);
+
+video.addEventListener("ended", handleEnded);
