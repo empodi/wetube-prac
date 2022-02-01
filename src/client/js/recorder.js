@@ -1,3 +1,5 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
 
@@ -5,7 +7,27 @@ let stream;
 let recorder;
 let videoFile;
 
-const handleDownload = () => {
+const handleDownload = async () => {
+  const ffmpeg = createFFmpeg({
+    corePath: "/assets/ffmpeg-core.js",
+    log: true,
+  });
+  await ffmpeg.load();
+
+  ffmpeg.FS(
+    "writeFile",
+    "recording.webm",
+    await fetchFile(videoFile) /** Binary Data that we made */
+  );
+
+  await ffmpeg.run(
+    "-i" /** input */,
+    "recording.webm",
+    "-r",
+    "60" /** "-r" and 60 makes encoding faster */,
+    "output.mp4"
+  );
+
   const a = document.createElement("a");
   a.href = videoFile;
   a.download = "MyRecording.webm";

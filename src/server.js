@@ -15,6 +15,13 @@ const app = express();
 app.use(logger);
 app.set("view engine", "pug"); // no need for import
 app.set("views", `${process.cwd()}/src/views`);
+
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 app.use(express.urlencoded({ extended: true })); // translates HTML form into javascript object (POST - req.body)
 
 app.use(
@@ -32,7 +39,11 @@ app.use(
 
 app.use(localsMiddleware); // should be after session middleware
 app.use("/uploads", express.static("uploads")); // allows browser to access the files inside the folder
-app.use("/assets", express.static("assets"));
+app.use(
+  "/assets",
+  express.static("assets"),
+  express.static("node_modules/@ffmpeg/core/dist")
+);
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
