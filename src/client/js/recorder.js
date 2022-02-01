@@ -1,11 +1,19 @@
 const startBtn = document.getElementById("startBtn");
+const video = document.getElementById("preview");
 
-const handleStart = async () => {
+const handleStart = () => {};
+
+const init = async () => {
+  // get Stream
   const stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: true,
+    audio: false,
+    video: { width: 400, height: 300 },
   });
-  console.log(stream);
+  //console.log(stream);
+  video.srcObject = stream;
+  video.play();
 };
+
+init();
 
 startBtn.addEventListener("click", handleStart);
