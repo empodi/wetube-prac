@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true })); // translates HTML form into javascript object (POST - req.body)
+app.use(express.json()); // Backend understands the STRING and turn it into JS object
 
 app.use(
   // should be located before Routers

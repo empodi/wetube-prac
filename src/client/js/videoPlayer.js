@@ -18,8 +18,6 @@ const fullScreenIcon = fullScreenBtn.querySelector("i");
 
 const textarea = document.getElementById("commentTextArea");
 
-video.play();
-
 let controlsTimeout = null;
 let controlsMoveTimeout = null;
 let currentVolume = 0.5;
