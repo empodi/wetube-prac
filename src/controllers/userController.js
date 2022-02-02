@@ -107,6 +107,7 @@ export const see = async (req, res) => {
 };
 export const logout = (req, res) => {
   req.session.destroy();
+  req.flash("info", "Bye Bye");
   return res.redirect("/");
 };
 
@@ -216,11 +217,13 @@ export const postEdit = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "Can't change password.");
     console.log(req.session.user.socialOnly);
     return res.redirect("/"); // later add notification
   }
   return res.render("change-password", { pageTitle: "Change Password" });
 };
+
 export const postChangePassword = async (req, res) => {
   const {
     body: { curPassword, newPwd, newPwdConfirm },
@@ -246,5 +249,6 @@ export const postChangePassword = async (req, res) => {
   }
   user.password = newPwd;
   await user.save(); // important
+  req.flash("info", "Password Updated.");
   return res.redirect("/");
 };

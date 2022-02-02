@@ -1,12 +1,14 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import { localsMiddleware } from "./middlewares";
 import apiRouter from "./routers/apiRouter";
+import expressFlash from "express-flash";
 
 // console.log(process.cwd());
 
@@ -37,6 +39,7 @@ app.use(
   })
 );
 
+app.use(flash());
 app.use(localsMiddleware); // should be after session middleware
 app.use("/uploads", express.static("uploads")); // allows browser to access the files inside the folder
 app.use(
