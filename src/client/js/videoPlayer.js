@@ -16,6 +16,8 @@ const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 
+const textarea = document.getElementById("commentTextArea");
+
 video.play();
 
 let controlsTimeout = null;
@@ -54,7 +56,7 @@ const handleClickPlay = () => {
 };
 
 const handleSpacebarPlay = (event) => {
-  if (event.keyCode === 32) {
+  if (event.target !== textarea && event.keyCode === 32) {
     setPlayPause();
   }
 };
