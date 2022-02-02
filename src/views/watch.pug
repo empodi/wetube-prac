@@ -14,22 +14,28 @@ block content
             input(type="range",step="1",value=0,min="0")#timeline.videoControls__timeline
             div.videoControls__volume
                 input(type="range",min="0",max="1",step="0.1",value=0.5)#volume
-                span#mute 
+                span#mute
                     i.fas.fa-volume-up
             div
                 span#fullScreen 
                     i.fas.fa-expand
-    //-
-        div 
-            p=video.description
-            small=video.createdAt
-            br
-            small Uploaded by 
-                a(href=`/users/${video.owner._id}`) #{video.owner.username}
+    
+    div.video__data 
+        p.video__title=video.title
+        small.video__owner Uploaded by 
+            a(href=`/users/${video.owner._id}`)=video.owner.username
+        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday:'long', year:'numeric',month:'long',day:'numeric'})
         if String(video.owner._id) === String(loggedInUser._id)
-            a(href=`${video.id}/edit`) Edit Video &rarr;
-            br
-            a(href=`${video.id}/delete`) Delete Video &rarr;
+            div.video__edit
+                a(href=`${video.id}/edit`) Edit Video &rarr;
+            div.video__delete
+                a(href=`${video.id}/delete`) Delete Video &rarr;
+    if loggedIn
+        div.video__comments
+            form.video__comment-form#commentForm
+                textarea(cols="30", rows="10", placeholder="Write a nice comment...")#commentTextArea
+                button Add Comment
 
 block scripts 
     script(src="/assets/js/videoPlayer.js")
+    script(src="/assets/js/commentSection.js")
