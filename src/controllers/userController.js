@@ -96,13 +96,15 @@ export const see = async (req, res) => {
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User Not Found." });
   }
-  /*
-    // populate
-    const videos = await Video.find({ owner: user._id }); 
-  */
+
+  // identical to populate
+  const videos = await Video.find({ owner: user._id });
+  console.log(videos);
+
   return res.render("profile", {
     pageTitle: `${user.username}'s Profile`,
     user,
+    videos,
   });
 };
 export const logout = (req, res) => {
