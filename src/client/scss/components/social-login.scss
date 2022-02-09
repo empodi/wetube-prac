@@ -2,8 +2,10 @@
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   padding-top: 30px;
   margin-top: 30px;
-  .social__btn--github {
+  .social__btn--github,
+  .social__btn--kakao {
     background-color: transparent;
     color: azure;
+    margin-bottom: 10px;
   }
 }

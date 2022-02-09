@@ -9,6 +9,8 @@ import {
   postEdit,
   getChangePassword,
   postChangePassword,
+  startKakaoLogin,
+  finsihKakaoLogin,
 } from "../controllers/userController";
 import {
   protectorMiddleware,
@@ -32,5 +34,7 @@ userRouter
   .get(getChangePassword)
   .post(postChangePassword);
 userRouter.get("/:id([0-9a-f]{24})", see);
+userRouter.get("/kakao/start", startKakaoLogin);
+userRouter.get("/kakao/finish", finsihKakaoLogin);
 
 export default userRouter;

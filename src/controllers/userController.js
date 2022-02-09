@@ -256,3 +256,93 @@ export const postChangePassword = async (req, res) => {
   req.flash("info", "Password Updated.");
   return res.redirect("/");
 };
+
+export const startKakaoLogin = async (req, res) => {
+  const baseUrl = "https://kauth.kakao.com/oauth/authorize";
+
+  const kakao = {
+    client_id: process.env.KAKAO_CLIENT,
+    response_type: "code",
+    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    scope: "profile_nickname,profile_image,account_email,gender",
+  };
+
+  const params = new URLSearchParams(kakao).toString();
+
+  const finalUrl = `${baseUrl}?${params}`;
+
+  return res.redirect(finalUrl);
+};
+
+export const finsihKakaoLogin = async (req, res) => {
+  const baseUrl = "https://kauth.kakao.com/oauth/token";
+
+  const config = {
+    grant_type: "authorization_code",
+    client_id: process.env.KAKAO_CLIENT,
+    //client_secret: process.env.KAKAO_SECRET,
+    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    code: req.query.code,
+  };
+
+  const params = new URLSearchParams(config).toString();
+
+  const finalUrl = `${baseUrl}?${params}`;
+
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+    })
+  ).json();
+
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const userData = await (
+      await fetch("https://kapi.kakao.com/v2/user/me", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+
+    const {
+      kakao_account: {
+        email,
+        profile: { profile_image_url },
+      },
+      properties: { nickname },
+    } = userData;
+
+    if (!email || !nickname || !profile_image_url) {
+      return res.redirect("/login", {
+        errorMessage: "Failed to get your information.",
+      });
+    }
+
+    const username = email.split("@")[0];
+
+    let user = await User.findOne({
+      email: email,
+    });
+
+    if (!user) {
+      user = await User.create({
+        name: nickname,
+        email: email,
+        username: username,
+        avatarUrl: profile_image_url,
+        password: "",
+        socialOnly: true,
+        location: "",
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  } else {
+    return res.redirect("/login");
+  }
+};
