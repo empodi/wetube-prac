@@ -111,7 +111,6 @@ export const logout = (req, res) => {
   req.session.user = null;
   res.locals.loggedInUser = req.session.user;
   req.session.loggedIn = false;
-  req.flash("info", "Bye Bye");
   return res.redirect("/");
 };
 
@@ -311,7 +310,7 @@ export const finsihKakaoLogin = async (req, res) => {
     const {
       kakao_account: {
         email,
-        profile: { profile_image_url },
+        profile: { profile_image_url, is_default_image },
       },
       properties: { nickname },
     } = userData;
