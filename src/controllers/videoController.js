@@ -17,6 +17,7 @@ export const home = async (req, res) => {
     const videos = await Video.find({})
       .sort({ createdAt: "desc" })
       .populate("owner");
+    req.flash("info", "Kakao Social Login Upadated!!!");
     return res.render("home", { pageTitle: "Home", videos });
   } catch {
     return res.render("server-error");
