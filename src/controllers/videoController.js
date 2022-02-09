@@ -168,8 +168,9 @@ export const createComment = async (req, res) => {
   } = req;
 
   const video = await Video.findById(id);
+  const currentUser = await User.findById(user._id);
 
-  if (!video) {
+  if (!video || !currentUser) {
     return res.sendStatus(404);
   }
 
@@ -180,6 +181,8 @@ export const createComment = async (req, res) => {
   });
   //console.log(comment);
   video.comments.push(comment._id);
-  video.save();
+  await video.save();
+  currentUser.comments.push(comment._id);
+  await currentUser.save();
   return res.sendStatus(201);
 };
