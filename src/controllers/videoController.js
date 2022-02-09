@@ -28,7 +28,7 @@ export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
   if (!video) {
-    return res.stats(404).render("404", { pageTitle: "Video not found." });
+    return res.status(404).render("404", { pageTitle: "Video not found." });
   }
 
   return res.render("watch", { pageTitle: video.title, video });
@@ -184,5 +184,51 @@ export const createComment = async (req, res) => {
   await video.save();
   currentUser.comments.push(comment._id);
   await currentUser.save();
-  return res.sendStatus(201);
+  return res.status(201).json({ newCommentId: comment._id });
+};
+
+const spliceArray = (object, target) => {
+  for (let i = 0; i < object.comments.length; i++) {
+    if (String(object.comments[i]) === target) {
+      object.comments.splice(i, 1);
+      break;
+    }
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id /* Video Id */ },
+    body: { commentId },
+    session: { user },
+  } = req;
+  const videoId = id;
+
+  const comment = await Comment.findById(commentId);
+  const currentVideo = await Video.findById(videoId);
+  const currentUser = await User.findById(user._id);
+
+  //console.log("comment owner:", String(comment.owner));
+  //console.log("sesson-user id", user._id);
+
+  //console.log(commentId);
+
+  if (!comment || !currentVideo || !currentUser) {
+    return res.sendStatus(400);
+  }
+
+  if (String(comment.owner) !== String(currentUser._id)) {
+    req.flash("error", "Not Authorized.");
+    return res.sendStatus(403);
+  }
+
+  try {
+    spliceArray(currentUser, commentId);
+    spliceArray(currentVideo, commentId);
+    await currentUser.save();
+    await currentVideo.save();
+    return res.sendStatus(201);
+  } catch {
+    return res.sendStatus(400);
+  }
 };
