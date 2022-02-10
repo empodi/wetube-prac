@@ -208,10 +208,9 @@ export const deleteComment = async (req, res) => {
   const currentVideo = await Video.findById(videoId);
   const currentUser = await User.findById(user._id);
 
-  //console.log("comment owner:", String(comment.owner));
-  //console.log("sesson-user id", user._id);
+  console.log("sesson-user id", user._id);
 
-  //console.log(commentId);
+  console.log(commentId);
 
   if (!comment || !currentVideo || !currentUser) {
     return res.sendStatus(400);
@@ -225,6 +224,7 @@ export const deleteComment = async (req, res) => {
   try {
     spliceArray(currentUser, commentId);
     spliceArray(currentVideo, commentId);
+    await Comment.findByIdAndDelete(commentId);
     await currentUser.save();
     await currentVideo.save();
     return res.sendStatus(201);

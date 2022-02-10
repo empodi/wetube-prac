@@ -1,30 +1,32 @@
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const deleteBtn = document.querySelectorAll("#delete__comment");
-const videoComment = document.getElementsByClassName("video__comment");
-//const btn = form.querySelector("button");
 
 const addRealTimeComment = (text, id) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
-  newComment.dataset.id = id;
+  newComment.dataset.comment_id = id;
   newComment.className = "video__comment";
+
   const icon = document.createElement("i");
   icon.className = "fas fa-comment";
   const span = document.createElement("span");
   span.innerText = ` ${text}`;
-  const del_span = document.createElement("button");
-  del_span.id = "delete__comment";
-  del_span.innerText = "❌";
+
+  const delButton = document.createElement("button");
+  delButton.id = "delete__comment";
+  delButton.dataset.comment_id = id;
+  delButton.innerText = "❌";
+  delButton.addEventListener("click", handleDeleteComment);
+
   newComment.appendChild(icon);
   newComment.appendChild(span);
-  newComment.appendChild(del_span);
+  newComment.appendChild(delButton);
   videoComments.prepend(newComment);
 };
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-  //console.log(videoContainer.dataset.id);
   const textarea = form.querySelector("textarea");
   const text = textarea.value;
   const videoId = videoContainer.dataset.id;
@@ -48,16 +50,11 @@ const handleSubmit = async (event) => {
   }
 };
 
-if (form) {
-  // for the case when a user is NOT LOGGED IN --> "form" doesn't exist
-  form.addEventListener("submit" /** NOT CLICK!!! */, handleSubmit);
-}
-
 const handleDeleteComment = async (event) => {
   const videoId = videoContainer.dataset.id;
   const commentId = event.target.dataset.comment_id;
-  console.log("handleComment: ", commentId);
 
+  console.log(event.target);
   console.log("commentID: ", commentId);
 
   const response = await fetch(`/api/videos/${videoId}/comment-delete`, {
@@ -83,6 +80,11 @@ const handleDeleteComment = async (event) => {
     }
   }
 };
+
+if (form) {
+  // for the case when a user is NOT LOGGED IN --> "form" doesn't exist
+  form.addEventListener("submit" /** NOT CLICK!!! */, handleSubmit);
+}
 
 for (let i = 0; i < deleteBtn.length; i++) {
   deleteBtn[i].addEventListener("click", handleDeleteComment);
