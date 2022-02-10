@@ -315,7 +315,10 @@ export const finsihKakaoLogin = async (req, res) => {
       properties: { nickname },
     } = userData;
 
-    if (!email || !nickname || !profile_image_url) {
+    console.log("is_default_image: ", is_default_image);
+    console.log("profile_image_url: ", profile_image_url);
+
+    if (!email || !nickname || (!is_default_image && !profile_image_url)) {
       return res.redirect("/login", {
         errorMessage: "Failed to get your information.",
       });
@@ -332,7 +335,7 @@ export const finsihKakaoLogin = async (req, res) => {
         name: nickname,
         email: email,
         username: username,
-        avatarUrl: profile_image_url,
+        avatarUrl: is_default_image ? "" : profile_image_url,
         password: "",
         socialOnly: true,
         location: "",
