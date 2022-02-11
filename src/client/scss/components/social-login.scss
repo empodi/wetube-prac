@@ -4,8 +4,8 @@
   margin-top: 30px;
   .social__btn--github,
   .social__btn--kakao {
-    background-color: transparent;
-    color: azure;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: rgba($color: $lightInput, $alpha: 0.7) !important;
     margin-bottom: 10px;
   }
 }

@@ -1,5 +1,7 @@
 form {
-  max-width: 420px;
+  &:not(.video__comments-form, .search__form) {
+    max-width: 420px;
+  }
   margin: 0 auto;
   &:not(.search__form) {
     padding: 30px;
@@ -10,7 +12,7 @@ form {
 }
 
 input:not(input[type="range"]),
-input:not(input[type="range"]) {
+input[type="submit"] {
   all: unset;
   padding: 15px 20px;
   border-radius: 5px;
@@ -24,12 +26,12 @@ input:not(input[type="range"]) {
     color: rgba(255, 255, 255, 0.7);
   }
 }
+
 input[type="submit"],
 .social__btn {
   padding: 12px 20px;
   border-radius: 5px;
-  background-color: white !important;
-  color: rgba($color: $red, $alpha: 1) !important;
+  color: rgba($color: $lightInput, $alpha: 0.7) !important;
   text-align: center !important;
   cursor: pointer;
   display: block;

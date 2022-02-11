@@ -26,6 +26,13 @@ a {
   text-decoration: none;
 }
 
+label {
+  background-color: transparent;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: block;
+}
+
 body {
   background-color: $bg;
   color: white;
@@ -38,6 +45,10 @@ main {
   width: 100%;
   margin: 0 auto;
   margin-top: 30px;
+}
+
+footer {
+  margin-bottom: 30px;
 }
 
 @keyframes goAway {
@@ -67,4 +78,124 @@ main {
     background-color: tomato;
     color: white;
   }
+}
+
+.dark-mode__btn {
+  border: none;
+  background-color: transparent;
+  color: #f1f7fb;
+  cursor: pointer;
+}
+.dark__mode {
+  background-color: whitesmoke;
+  color: black;
+  i {
+    color: black;
+  }
+  label {
+    background-color: transparent;
+    color: rgba($color: $lightInput, $alpha: 0.9);
+  }
+  form {
+    &:not(.search__form) {
+      background-color: rgba($color: $lightInput, $alpha: 0.1);
+    }
+  }
+
+  .auth-switch {
+    background-color: transparent;
+  }
+  .videoControls {
+    background-color: transparent;
+    div,
+    input,
+    span {
+      background-color: transparent;
+      color: white;
+    }
+    i {
+      background-color: transparent;
+      color: white;
+    }
+  }
+  input:not(input[type="range"]),
+  input[type="submit"] {
+    background-color: rgba($color: $lightInput, $alpha: 0.7);
+    color: whitesmoke;
+  }
+  input[type="submit"],
+  .social__btn {
+    color: rgba($color: white, $alpha: 0.9) !important;
+  }
+  .social-login {
+    border-top: 1px solid rgba($color: $lightInput, $alpha: 0.7);
+    background-color: transparent;
+    i {
+      color: rgba($color: $lightInput, $alpha: 0.9);
+    }
+  }
+  .social__btn--github,
+  .social__btn--kakao {
+    color: rgba($color: $lightInput, $alpha: 0.9) !important;
+  }
+
+  .video__add-comments button,
+  .video__comments-container button {
+    background-color: #fbf9f9;
+  }
+
+  .comment-textarea {
+    background-color: #fbf9f9;
+  }
+
+  .video__data {
+    .video__data-box,
+    .video__owner,
+    .video__edit-delete {
+      border-bottom: solid rgba($color: $bg, $alpha: 0.3);
+    }
+    .video__edit-delete a {
+      color: rgba($color: red, $alpha: 0.3);
+    }
+  }
+  .video__comments-container {
+    .video__comment {
+      background-color: rgba($color: $lightInput, $alpha: 0.1);
+      color: black;
+      border: 1px solid rgba($color: $lightInput, $alpha: 0.7);
+    }
+    .comment__owner span {
+      color: rgba($color: $lightInput, $alpha: 0.7);
+    }
+    .comment__content {
+      background-color: #f1f7fb;
+    }
+  }
+  .search__form button {
+    i {
+      color: white;
+      background-color: transparent;
+    }
+    background-color: #d9b4b4;
+  }
+  .profile__data h3 {
+    color: rgba($color: $lightInput, $alpha: 1);
+  }
+  header {
+    a,
+    i {
+      color: $lightInput;
+    }
+    .header__logo i {
+      color: $red;
+    }
+  }
+  .message span {
+    color: rgba($color: $lightInput, $alpha: 0.9);
+  }
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
 }

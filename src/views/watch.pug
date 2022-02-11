@@ -20,29 +20,46 @@ block content
                 span#fullScreen 
                     i.fas.fa-expand
     
-    div.video__data 
+    div.video__data
         p.video__title=video.title
-        small.video__owner Uploaded by 
+        div.video__data-box
+            div.video__data-first-column
+                span.video__views__createdAt #{video.meta.views} views • #{new Date(video.createdAt).toLocaleDateString({weekday:'long', year:'numeric',month:'long',day:'numeric'})}
+            div.video__data-second-column 
+                span Rating: #{video.meta.rating} / 5.0
+        div.video__owner 
+            if video.owner.avatarUrl === ""
+                span 😀 
+            else
+                img(src="/" + video.owner.avatarUrl).video__data-avatar
             a(href=`/users/${video.owner._id}`)=video.owner.username
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday:'long', year:'numeric',month:'long',day:'numeric'})
         if String(video.owner._id) === String(loggedInUser._id)
-            div.video__edit
-                a(href=`${video.id}/edit`) Edit Video &rarr;
-            div.video__delete
-                a(href=`${video.id}/delete`) Delete Video &rarr;
+            div.video__edit-delete
+                div.video__edit
+                    a(href=`${video.id}/edit`) Edit Video &rarr;
+                div.video__delete
+                    a(href=`${video.id}/delete`) Delete Video &rarr;
     if loggedIn
         div.video__add-comments
-            form.video__comment-form#commentForm
-                textarea(cols="30", rows="10", placeholder="Write a nice comment...")#commentTextArea
+            form.video__comments-form#commentForm
+                textarea.comment-textarea(cols="30", rows="10", placeholder="Write a nice comment...")#commentTextArea
                 button Add Comment
-    div.video__comments 
+    div.video__comments-container(data-loggedinuser=loggedInUser)
         ul
             each comment in video.comments.reverse()
                 li.video__comment(data-comment_id=comment._id)
-                    i.fas.fa-comment
-                    span #{comment.text }
+                    div.comment__box
+                        div.comment__owner
+                            if comment.ownerAvatarUrl === ""
+                                span.alter__avatar 😀 
+                            else
+                                img(src="/" + comment.ownerAvatarUrl).video__data-avatar
+                            span.comment__user-name=comment.ownerName
+                            span.comment__created-at #{new Date(comment.createdAt).toLocaleDateString({weekday:'long', year:'numeric',month:'long',day:'numeric'})}
+                    div.comment__content
+                        span #{comment.text }
                     if String(comment.owner) === String(loggedInUser._id)
-                        button#delete__comment(data-comment_id=comment._id) ❌
+                        button#delete__comment(data-comment_id=comment._id) Delete Comment
 
 
 block scripts 
