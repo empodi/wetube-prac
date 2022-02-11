@@ -28,7 +28,7 @@ const addRealTimeComment = (text, id) => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   const textarea = form.querySelector("textarea");
-  const text = textarea.value;
+  const text = textarea.value.trim().replace(/\n+$/, "");
   const videoId = videoContainer.dataset.id;
 
   if (text === "") return;
