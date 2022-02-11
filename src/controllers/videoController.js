@@ -17,7 +17,7 @@ export const home = async (req, res) => {
     const videos = await Video.find({})
       .sort({ createdAt: "desc" })
       .populate("owner");
-    console.log(res.locals.loggedIn);
+
     if (res.locals.loggedIn == -false)
       req.flash("info", "Kakao Social Login Updated!!!");
 
@@ -30,11 +30,14 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
+  const owner = video.owner;
+  const user = await User.findById(owner);
+
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
 
-  return res.render("watch", { pageTitle: video.title, video });
+  return res.render("watch", { pageTitle: video.title, video, user });
 };
 
 export const getEdit = async (req, res) => {
@@ -44,6 +47,7 @@ export const getEdit = async (req, res) => {
     },
     params: { id },
   } = req;
+
   const video = await Video.findById(id);
 
   if (!video) {
@@ -139,12 +143,11 @@ export const deleteVideo = async (req, res) => {
 
 export const search = async (req, res) => {
   const { keyword } = req.query;
-
   let videos = [];
   if (keyword) {
     videos = await Video.find({
       title: {
-        $regex: new RegExp(`${keyword}$`, "ig"),
+        $regex: new RegExp(keyword, "i"),
       },
     }).populate("owner");
   }
@@ -180,6 +183,8 @@ export const createComment = async (req, res) => {
   const comment = await Comment.create({
     text,
     owner: user._id,
+    ownerName: currentUser.username,
+    ownerAvatarUrl: currentUser.avatarUrl,
     video: id,
   });
   //console.log(comment);
@@ -231,7 +236,8 @@ export const deleteComment = async (req, res) => {
     await currentUser.save();
     await currentVideo.save();
     return res.sendStatus(201);
-  } catch {
+  } catch (error) {
+    console.log(error);
     return res.sendStatus(400);
   }
 };
