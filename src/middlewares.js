@@ -12,9 +12,23 @@ const s3 = new aws.S3({
   },
 });
 
+const isHeroku = process.env.NODE_ENV === "production";
+
 const multerUploader = multerS3({
   s3: s3,
   bucket: "wetube-empodi-2022",
+  acl: "public-read",
+});
+
+const s3ImageUploader = multerS3({
+  s3: s3,
+  bucket: "wetube-empodi-2022/images",
+  acl: "public-read",
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "wetube-empodi-2022/videos",
   acl: "public-read",
 });
 
@@ -48,15 +62,15 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
-export const avatarUpload = multer({
+export const avatarUploader = multer({
   dest: "uploads/avatars",
   limits: { fileSize: 3000000 },
-  storage: multerUploader,
+  storage: isHeroku ? s3ImageUploader : undefined,
 });
-export const videoUpload = multer({
+export const s3VideoUploader = multer({
   dest: "uploads/videos",
   limits: { fileSize: 100000000 },
-  storage: multerUploader,
+  storage: isHeroku ? multerUploader : undefined,
 });
 /*
   NEVER SAVE A FILE ON A DATABASE!!!!! 

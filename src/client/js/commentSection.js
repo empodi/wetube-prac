@@ -13,7 +13,6 @@ const addRealTimeComment = (text, id) => {
 
   const user = comment__container[0].dataset.loggedinuser;
   userObj = JSON.parse(user);
-  console.log(userObj);
 
   const commentBox = document.createElement("div");
   commentBox.className = "comment__box";
@@ -37,7 +36,8 @@ const addRealTimeComment = (text, id) => {
   userName.className = "comment__user-name";
   if (userObj.avatarUrl !== "") {
     const userImg = document.createElement("img");
-    userImg.setAttribute("src", `/${userObj.avatarUrl}`);
+    userImg.setAttribute("src", userObj.avatarUrl);
+
     const userName = document.createElement("span");
     userName.innerText = userObj.username;
     commentOwner.appendChild(userImg);
@@ -96,9 +96,6 @@ const handleSubmit = async (event) => {
 const handleDeleteComment = async (event) => {
   const videoId = videoContainer.dataset.id;
   const commentId = event.target.dataset.comment_id;
-
-  console.log(event.target);
-  console.log("commentID: ", commentId);
 
   const response = await fetch(`/api/videos/${videoId}/comment-delete`, {
     method: "DELETE",

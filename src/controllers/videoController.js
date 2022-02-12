@@ -95,14 +95,14 @@ export const postUpload = async (req, res) => {
     body: { title, description, hashtags },
     files: { video, thumb },
   } = req;
-
+  const isHeroku = process.env.NODE_ENV === "production";
   try {
     const newVideo = await Video.create({
       title: title,
       owner: _id,
       description: description,
-      fileUrl: video[0].location,
-      thumbUrl: thumb[0].location,
+      fileUrl: isHeroku ? video[0].location : video[0].path,
+      thumbUrl: isHeroku ? thumb[0].location : video[0].path,
       //createdAt: Date.now(), // default in VideoSchema
       hashtags: Video.formatHashtags(hashtags), // static function
       //meta: default in VideoSchema

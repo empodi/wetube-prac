@@ -224,11 +224,13 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req; //ES6!!!
-  console.log(file);
+
+  const isHeroku = process.env.NODE_ENV === "production";
+
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.location : avatarUrl,
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
       name: name,
       email: email,
       username: username,
