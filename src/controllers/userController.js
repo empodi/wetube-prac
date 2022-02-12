@@ -84,6 +84,7 @@ export const postLogin = async (req, res) => {
 export const remove = (req, res) => {
   return res.send("Remove user");
 };
+
 export const see = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate({
@@ -99,6 +100,7 @@ export const see = async (req, res) => {
 
   // identical to populate
   const videos = await Video.find({ owner: user._id });
+  console.log(user._id);
   console.log(videos);
 
   return res.render("profile", {
@@ -107,6 +109,7 @@ export const see = async (req, res) => {
     videos,
   });
 };
+
 export const logout = (req, res) => {
   req.session.user = null;
   res.locals.loggedInUser = req.session.user;
