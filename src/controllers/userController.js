@@ -285,7 +285,7 @@ export const startKakaoLogin = async (req, res) => {
   const kakao = {
     client_id: process.env.KAKAO_CLIENT,
     response_type: "code",
-    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    redirect_uri: "https://wetube-cloning.herokuapp.com/users/kakao/finish",
     scope: "profile_nickname,profile_image,account_email,gender",
   };
 
