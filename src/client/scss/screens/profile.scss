@@ -4,9 +4,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
-  span {
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+  .profile__no-image {
+    opacity: 0.4;
+  }
+  .profile__user-email {
+    margin-top: 20px;
+  }
+  .profile__user-email i {
+    margin-right: 6px;
+  }
+  .profile__user-email > * {
     color: rgba($color: white, $alpha: 0.4);
+  }
+  .profile__edit_btn {
+    margin-top: 30px;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #050505;
+    color: rgba($color: $lightInput, $alpha: 0.7);
   }
   h3 {
     margin-top: 20px;
@@ -17,4 +36,9 @@
     border: 1px solid rgba($color: $lightInput, $alpha: 0.7);
     border-radius: 10px;
   }
+  border-bottom: 1px solid rgba($color: $lightInput, $alpha: 0.7);
+}
+.profile__uploaded_videos {
+  font-size: 18px;
+  padding-bottom: 50px;
 }

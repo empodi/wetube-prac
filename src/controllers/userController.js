@@ -100,10 +100,30 @@ export const see = async (req, res) => {
 
   // identical to populate
   const videos = await Video.find({ owner: user._id });
-  console.log(user._id);
-  console.log(videos);
 
   return res.render("profile", {
+    pageTitle: `${user.username}'s Profile`,
+    user,
+    videos,
+  });
+};
+
+export const userProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User Not Found." });
+  }
+
+  const videos = await Video.find({ owner: user._id });
+
+  return res.render("user-profile", {
     pageTitle: `${user.username}'s Profile`,
     user,
     videos,

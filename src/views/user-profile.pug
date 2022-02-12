@@ -7,9 +7,11 @@ block content
             span.profile__no-image 😀 No Profile Image...
         else
             img(src="/" + user.avatarUrl).avatar
-        h3 Hi, #{user.username}!
-        a(href="/users/edit").profile__edit_btn Edit profile
-    h2.profile__uploaded_videos Your Videos
+        h3 #{user.username}'s Profile
+        div.profile__user-email
+            i.fas.fa-envelope 
+            span=user.email
+    h2.profile__uploaded_videos Uploaded Videos
     div.video-grid
         each video in videos
             +video(video)
