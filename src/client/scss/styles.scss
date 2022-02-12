@@ -24,6 +24,9 @@
 a {
   color: inherit;
   text-decoration: none;
+  &:focus {
+    outline: none;
+  }
 }
 
 label {
@@ -80,13 +83,13 @@ footer {
   }
 }
 
-.dark-mode__btn {
+.light-mode__btn {
   border: none;
   background-color: transparent;
   color: #f1f7fb;
   cursor: pointer;
 }
-.dark__mode {
+.light__mode {
   .video:fullscreen {
     background-color: black;
   }
@@ -187,13 +190,19 @@ footer {
     }
   }
   .profile__data {
-    span {
-      color: rgba($color: $bg, $alpha: 0.4);
-    }
     h3 {
+      color: aliceblue;
+      background-color: #d9b4b4;
+      border: 1px solid rgba($color: lightpink, $alpha: 0.7);
+    }
+    .profile__edit_btn {
       color: aliceblue;
       background-color: rgba($color: $lightInput, $alpha: 0.9);
     }
+    .profile__user-email > * {
+      color: rgba($color: $bg, $alpha: 0.4);
+    }
+    border-bottom: 1px solid rgba($color: $bg, $alpha: 0.3);
   }
   header {
     a,
