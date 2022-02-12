@@ -120,6 +120,26 @@ export const postUpload = async (req, res) => {
   }
 };
 
+const spliceCommentArray = (object, target) => {
+  for (let i = 0; i < object.comments.length; i++) {
+    if (String(object.comments[i]) === String(target)) {
+      object.comments.splice(i, 1);
+      break;
+    }
+  }
+};
+
+const spliceVideoArray = (object, target) => {
+  console.log("splice video array function", object, target);
+  for (let i = 0; i < object.videos.length; i++) {
+    if (String(object.videos[i]) === String(target)) {
+      console.log("GOT IT");
+      object.videos.splice(i, 1);
+      break;
+    }
+  }
+};
+
 export const deleteVideo = async (req, res) => {
   const {
     params: { id },
@@ -136,6 +156,25 @@ export const deleteVideo = async (req, res) => {
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
+
+  const commentArray = video.comments;
+
+  for (let i = 0; i < commentArray.length; i++) {
+    const commentId = String(commentArray[i]);
+
+    const commentObj = await Comment.findById(commentId);
+    const Owner = await User.findById(String(commentObj.owner));
+
+    spliceCommentArray(Owner, commentId);
+    await Owner.save();
+
+    await Comment.findByIdAndDelete(commentId);
+  }
+
+  const videoOwner = await User.findById(String(video.owner));
+
+  spliceVideoArray(videoOwner, id);
+  videoOwner.save();
 
   await Video.findByIdAndDelete(id);
   return res.redirect("/");
@@ -195,15 +234,6 @@ export const createComment = async (req, res) => {
   return res.status(201).json({ newCommentId: comment._id });
 };
 
-const spliceArray = (object, target) => {
-  for (let i = 0; i < object.comments.length; i++) {
-    if (String(object.comments[i]) === target) {
-      object.comments.splice(i, 1);
-      break;
-    }
-  }
-};
-
 export const deleteComment = async (req, res) => {
   const {
     params: { id /* Video Id */ },
@@ -230,8 +260,8 @@ export const deleteComment = async (req, res) => {
   }
 
   try {
-    spliceArray(currentUser, commentId);
-    spliceArray(currentVideo, commentId);
+    spliceCommentArray(currentUser, commentId);
+    spliceCommentArray(currentVideo, commentId);
     await Comment.findByIdAndDelete(commentId);
     await currentUser.save();
     await currentVideo.save();
