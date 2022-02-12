@@ -152,6 +152,7 @@ footer {
 
   .comment-textarea {
     background-color: #fbf9f9;
+    color: rgba($color: $bg, $alpha: 0.9);
   }
 
   .video__data {
@@ -206,7 +207,8 @@ footer {
   }
   header {
     a,
-    i {
+    i,
+    .fas.fa-address-card.fa-lg {
       color: $lightInput;
     }
     .header__logo i {
