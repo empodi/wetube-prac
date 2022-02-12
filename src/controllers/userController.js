@@ -303,7 +303,7 @@ export const finsihKakaoLogin = async (req, res) => {
     grant_type: "authorization_code",
     client_id: process.env.KAKAO_CLIENT,
     //client_secret: process.env.KAKAO_SECRET,
-    redirect_uri: "http://localhost:4000/users/kakao/finish",
+    redirect_uri: "https://wetube-cloning.herokuapp.com/users/kakao/finish",
     code: req.query.code,
   };
 
