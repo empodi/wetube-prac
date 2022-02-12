@@ -6,7 +6,7 @@ block content
         if user.avatarUrl === ""
             span.profile__no-image 😀 No Profile Image...
         else
-            img(src="/" + user.avatarUrl).avatar
+            img(src=user.avatarUrl, crossorigin).avatar
         h3 Hi, #{user.username}!
         a(href="/users/edit").profile__edit_btn Edit profile
     h2.profile__uploaded_videos Your Videos

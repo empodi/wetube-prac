@@ -101,8 +101,8 @@ export const postUpload = async (req, res) => {
       title: title,
       owner: _id,
       description: description,
-      fileUrl: video[0].path,
-      thumbUrl: thumb[0].path,
+      fileUrl: video[0].location,
+      thumbUrl: thumb[0].location,
       //createdAt: Date.now(), // default in VideoSchema
       hashtags: Video.formatHashtags(hashtags), // static function
       //meta: default in VideoSchema
