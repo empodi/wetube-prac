@@ -87,6 +87,9 @@ footer {
   cursor: pointer;
 }
 .dark__mode {
+  .video:fullscreen {
+    background-color: black;
+  }
   background-color: whitesmoke;
   color: black;
   i {
@@ -171,15 +174,26 @@ footer {
       background-color: #f1f7fb;
     }
   }
-  .search__form button {
-    i {
-      color: white;
-      background-color: transparent;
+  .search__form {
+    input {
+      color: #f1f7fb !important;
     }
-    background-color: #d9b4b4;
+    button {
+      i {
+        color: white;
+        background-color: transparent;
+      }
+      background-color: #d9b4b4;
+    }
   }
-  .profile__data h3 {
-    color: rgba($color: $lightInput, $alpha: 1);
+  .profile__data {
+    span {
+      color: rgba($color: $bg, $alpha: 0.4);
+    }
+    h3 {
+      color: aliceblue;
+      background-color: rgba($color: $lightInput, $alpha: 0.9);
+    }
   }
   header {
     a,
@@ -189,7 +203,12 @@ footer {
     .header__logo i {
       color: $red;
     }
+    .header__btn {
+      color: whitesmoke;
+      background-color: $lightInput;
+    }
   }
+
   .message span {
     color: rgba($color: $lightInput, $alpha: 0.9);
   }
