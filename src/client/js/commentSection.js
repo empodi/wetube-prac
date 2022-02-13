@@ -37,6 +37,7 @@ const addRealTimeComment = (text, id) => {
   if (userObj.avatarUrl !== "") {
     const userImg = document.createElement("img");
     userImg.setAttribute("src", userObj.avatarUrl);
+    userImg.crossOrigin = "crossorigin";
 
     const userName = document.createElement("span");
     userName.innerText = userObj.username;
