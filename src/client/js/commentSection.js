@@ -55,6 +55,11 @@ const addRealTimeComment = (text, id) => {
 
   const commentContent = document.createElement("div");
   commentContent.className = "comment__content";
+
+  const isLightMode = localStorage.getItem("lightMode");
+  if (isLightMode === "true") {
+    commentContent.classList.add("light__mode");
+  }
   commentContent.appendChild(textContent);
 
   const delButton = document.createElement("button");
