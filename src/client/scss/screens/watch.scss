@@ -1,6 +1,13 @@
 .video__data {
   margin-top: 20px;
   padding-bottom: 10px;
+  .video__hashtags {
+    margin-bottom: 20px;
+    span {
+      text-decoration: underline;
+      margin-right: 10px;
+    }
+  }
   .video__title {
     font-size: 26px;
     padding-bottom: 15px;

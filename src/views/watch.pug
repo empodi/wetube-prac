@@ -21,6 +21,10 @@ block content
                     i.fas.fa-expand
     
     div.video__data
+        div.video__hashtags
+            if video.hashtags
+                each hashtag in video.hashtags 
+                    span.video__each-hashtag #{hashtag}  
         p.video__title=video.title
         div.video__data-box
             div.video__data-first-column

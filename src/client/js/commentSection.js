@@ -58,7 +58,7 @@ const addRealTimeComment = (text, id) => {
 
   const isLightMode = localStorage.getItem("lightMode");
   if (isLightMode === "true") {
-    commentContent.classList.add("light__mode");
+    textContent.classList.add("light__mode");
   }
   commentContent.appendChild(textContent);
 
