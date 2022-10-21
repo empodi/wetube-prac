@@ -27,6 +27,7 @@
     "aws-sdk": "^2.1073.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "express-flash": "^0.0.2",

@@ -31,7 +31,7 @@ app.use(
   // should be located before Routers
   session({
     // this middleware will remember everybody who comes to the website
-    // even not logged-in ones
+    // even not-logged-in ones
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false, // gives cookie only to logged in users
